@@ -1,4 +1,4 @@
-name: My First Workflow
+name: CI with Cache
 
 on:
   push:
@@ -6,11 +6,19 @@ on:
       - main
 
 jobs:
-  test:
+  cache-job:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
 
-      - name: 25ds2000002@ds.study.iitm.ac.in
-        run: echo "Hello from GitHub Actions!"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: prime-cache-ea0a419
+        id: cache-step
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: cache-ea0a419
+
+      - name: Show cache result
+        run: echo "Cache result: ${{ steps.cache-step.outputs.cache-hit }}"
